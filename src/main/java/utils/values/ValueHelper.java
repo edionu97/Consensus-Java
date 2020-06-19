@@ -12,4 +12,16 @@ public class ValueHelper {
                 .setDefined(false)
                 .build();
     }
+
+    /**
+     * Creates a copy of the value
+     * @param value: the value that will be copied
+     * @return the copy of the value
+     */
+    public static Paxos.Value makeCopy(Paxos.Value value) {
+        return Paxos.Value.newBuilder()
+                .setDefined(value.getDefined())
+                .setV(value.getV())
+                .build();
+    }
 }
