@@ -163,7 +163,7 @@ public class HubNode implements INode {
         final var plDeliverMessage = MessagesHelper
                 .createPLDeliverMessage(senderProcess, innerMessage, receivedMessage.getAbstractionId());
 
-        //trigger the receivedMessage
+        //trigger the plDeliver message so that all the abstractions that listen for PL_DELIVER message type to be informed
         consSystem.trigger(plDeliverMessage);
     }
 
