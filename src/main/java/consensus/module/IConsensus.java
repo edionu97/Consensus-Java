@@ -62,6 +62,11 @@ public interface IConsensus {
     int getNodePort();
 
     /**
+     * @return a list of process
+     */
+    List<Paxos.ProcessId> getProcess();
+
+    /**
      * This method it is used in order to identify the process that sent the message, based on it's port
      *
      * @param message: the network message

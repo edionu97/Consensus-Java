@@ -104,6 +104,11 @@ public class ConsensusSystemModule implements IConsensus {
     }
 
     @Override
+    public List<Paxos.ProcessId> getProcess() {
+        return processList;
+    }
+
+    @Override
     public Optional<Paxos.ProcessId> identifySenderProcessByNetworkMessage(final Paxos.NetworkMessage networkMessage) {
         //get the process that sent the network message
         return processList
