@@ -13,6 +13,9 @@ import java.util.function.Consumer;
 
 public class ConsensusSystemModule implements IConsensus {
 
+    private int hubPort;
+    private int nodePort;
+    private String hubIp;
     private final String systemId;
 
     private final List<Paxos.ProcessId> processList = new CopyOnWriteArrayList<>();
@@ -21,7 +24,11 @@ public class ConsensusSystemModule implements IConsensus {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public ConsensusSystemModule(final String systemId) {
+    public ConsensusSystemModule(final int hubPort,
+                                 final int nodePort, final String hubIp, final String systemId) {
+        this.hubPort = hubPort;
+        this.nodePort = nodePort;
+        this.hubIp = hubIp;
         this.systemId = systemId;
     }
 
@@ -79,6 +86,21 @@ public class ConsensusSystemModule implements IConsensus {
     @Override
     public String getSystemId() {
         return systemId;
+    }
+
+    @Override
+    public String getHubIp() {
+        return hubIp;
+    }
+
+    @Override
+    public int getHubPort() {
+        return hubPort;
+    }
+
+    @Override
+    public int getNodePort() {
+        return nodePort;
     }
 
     @Override

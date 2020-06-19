@@ -10,16 +10,8 @@ import java.util.Arrays;
 
 public class AppLayer extends AbstractLayer {
 
-    private final int nodePort;
-    private final int hubPort;
-    private final String hubIp;
-
-    public AppLayer(final IConsensus consensus,
-                    final int nodePort, final int hubPort, final String hubIp) {
+    public AppLayer(final IConsensus consensus) {
         super(consensus);
-        this.nodePort = nodePort;
-        this.hubPort = hubPort;
-        this.hubIp = hubIp;
     }
 
     /**
@@ -68,7 +60,7 @@ public class AppLayer extends AbstractLayer {
         //get the appDecide Message
         var appDecideMessage = MessagesHelper.createAppDecideMessage(consensus.getSystemId(), ucDecide);
         //send the message to the hub
-        SendHelper.sendMessage(appDecideMessage, hubIp, hubPort, nodePort);
+        SendHelper.sendMessage(appDecideMessage, consensus.getHubIp(), consensus.getHubPort(), consensus.getNodePort());
         return true;
     }
 

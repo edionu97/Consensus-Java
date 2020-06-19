@@ -128,12 +128,12 @@ public class HubNode implements INode {
      */
     private void onAppPurpose(final Paxos.Message receivedMessage, final String systemId) {
         //crete a new instance of a consensus system
-        var consensusSystemModule = new ConsensusSystemModule(systemId) {{
+        var consensusSystemModule = new ConsensusSystemModule(hubPort, nodePort, hubIp, systemId) {{
             init();
             //the first layer is the app layer
             configure(Collections
                     .singletonList(
-                            (consensus) -> consensus.pushLayer(new AppLayer(consensus, nodePort, hubPort, hubIp))));
+                            (consensus) -> consensus.pushLayer(new AppLayer(consensus))));
         }};
         //add it to the map
         sysIdToConsensus.put(systemId, consensusSystemModule);
