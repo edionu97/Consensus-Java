@@ -3,11 +3,23 @@ package consensus.algorithms.impl;
 import consensus.Paxos;
 import consensus.algorithms.abstracts.AbstractLayer;
 import consensus.module.IConsensus;
+import utils.messages.MessagesHelper;
+import utils.messages.SendHelper;
+
+import java.util.Arrays;
 
 public class AppLayer extends AbstractLayer {
 
-    public AppLayer(final IConsensus consensus) {
+    private final int nodePort;
+    private final int hubPort;
+    private final String hubIp;
+
+    public AppLayer(final IConsensus consensus,
+                    final int nodePort, final int hubPort, final String hubIp) {
         super(consensus);
+        this.nodePort = nodePort;
+        this.hubPort = hubPort;
+        this.hubIp = hubIp;
     }
 
     /**
@@ -33,11 +45,30 @@ public class AppLayer extends AbstractLayer {
         //get the process list
         final var processList = appPropose.getProcessesList();
 
+        //configure the consensus module
+        consensus.configure(Arrays.asList(
+                //set the process list
+                (consensus) -> consensus.alterProcessList(processList),
+                //push the other layers into the consensus module
+                (consensus) -> consensus.pushLayer(new UniformConsensusLayer(consensus)),
+                (consensus) -> consensus.pushLayer(new EpochChangeLayer(consensus)),
+                (consensus) -> consensus.pushLayer(new EventuallyPerfectFailureDetectorLayer(consensus)),
+                (consensus) -> consensus.pushLayer(new EventualLeaderDetectorLayer(consensus)),
+                (consensus) -> consensus.pushLayer(new BestEffortBroadcastLayer(consensus)),
+                (consensus) -> consensus.pushLayer(new PerfectLinkLayer(consensus))
+        ));
+
+        //trigger the appPropose message
+        consensus.trigger(MessagesHelper.createUcProposeMessage(appPropose));
         return true;
     }
 
 
     private boolean onUcDecide(final Paxos.UcDecide ucDecide) {
+        //get the appDecide Message
+        var appDecideMessage = MessagesHelper.createAppDecideMessage(consensus.getSystemId(), ucDecide);
+        //send the message to the hub
+        SendHelper.sendMessage(appDecideMessage, hubIp, hubPort, nodePort);
         return true;
     }
 

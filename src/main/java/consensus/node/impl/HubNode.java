@@ -99,12 +99,13 @@ public class HubNode implements INode {
      * If the receivedMessage is app purpose then start a new instance of consensus module, otherwise, if other than the
      * AppPurpose receivedMessage is encountered, the receivedMessage is pushed into the correct queue (it's system queue), based on
      * it's system id
+     *
      * @param receivedMessage: the received receivedMessage
      */
     private void processMessage(final Paxos.Message receivedMessage) {
 
         //get the network receivedMessage
-        final var networkMessage =  receivedMessage.getNetworkMessage();
+        final var networkMessage = receivedMessage.getNetworkMessage();
         //get the receivedMessage from the network
         final var innerMessage = networkMessage.getMessage();
         //get the systemId
@@ -122,16 +123,17 @@ public class HubNode implements INode {
 
     /**
      * This method is used for handling the AppPurpose receivedMessage
+     *
      * @param receivedMessage: the receivedMessage itself
      */
     private void onAppPurpose(final Paxos.Message receivedMessage, final String systemId) {
         //crete a new instance of a consensus system
-        var consensusSystemModule = new ConsensusSystemModule(nodePort, hubPort, hubIp, systemId){{
+        var consensusSystemModule = new ConsensusSystemModule(systemId) {{
             init();
             //the first layer is the app layer
             configure(Collections
                     .singletonList(
-                            (consensus) -> consensus.pushLayer(new AppLayer(consensus))));
+                            (consensus) -> consensus.pushLayer(new AppLayer(consensus, nodePort, hubPort, hubIp))));
         }};
         //add it to the map
         sysIdToConsensus.put(systemId, consensusSystemModule);
@@ -143,25 +145,26 @@ public class HubNode implements INode {
     /**
      * This is a callback for handling all the messages types received by the node, excepting the AppPurpose receivedMessage
      * The messages, should be pushed back into the proper system queue (to the proper consensus system)
+     *
      * @param receivedMessage: the receivedMessage
-     * @param systemId: the id of the system
+     * @param systemId:        the id of the system
      */
     private void onMessage(final Paxos.Message receivedMessage, final String systemId) {
 
         //get the network receivedMessage
-        final var networkMessage =  receivedMessage.getNetworkMessage();
+        final var networkMessage = receivedMessage.getNetworkMessage();
         //get the receivedMessage from the network
         final var innerMessage = networkMessage.getMessage();
 
         //get the system
         var consSystem = sysIdToConsensus.get(systemId);
-        if(consSystem == null) {
+        if (consSystem == null) {
             return;
         }
 
         //get the sender process, and if the process is not found, do nothing
         final var senderProcessOptional = consSystem.identifySenderProcessByNetworkMessage(networkMessage);
-        if(senderProcessOptional.isEmpty()){
+        if (senderProcessOptional.isEmpty()) {
             return;
         }
 

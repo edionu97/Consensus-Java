@@ -32,6 +32,17 @@ public interface IConsensus {
     void pushLayer(final IAbstractionLayer layer);
 
     /**
+     * Modify the inner process list
+     * @param processIds: a list with process id
+     */
+    void alterProcessList(final List<Paxos.ProcessId> processIds);
+
+    /**
+     * @return a string representing the id of the system that stated the consensus algorithm the
+     */
+    String getSystemId();
+
+    /**
      * This method it is used in order to identify the process that sent the message, based on it's port
      * @param message: the network message
      * @return Optional.of(element) if the element is present into the list or optional.empty otherwise
