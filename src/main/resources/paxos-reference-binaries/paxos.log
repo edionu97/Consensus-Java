@@ -1,31 +1,22 @@
-{"level":"info","time":1592560982992,"message":"Hub listening on localhost:5000"}
-{"level":"info","time":1592560982993,"message":"ref-2: listening on localhost:5002"}
-{"level":"info","time":1592560982993,"message":"ref-3: listening on localhost:5003"}
-{"level":"info","time":1592560982993,"message":"ref-1: listening on localhost:5001"}
-{"level":"info","time":1592560983299,"message":"Received registration from ref-2"}
-{"level":"info","time":1592560983299,"message":"Received registration from ref-3"}
-{"level":"info","time":1592560983299,"message":"Received registration from ref-1"}
-{"level":"info","time":1592560991720,"message":"Received registration from node-1"}
-{"level":"info","time":1592560991722,"message":"Received registration from node-2"}
-{"level":"info","time":1592560991722,"message":"Received registration from node-3"}
-{"level":"info","time":1592561000551,"message":"sys-1/node-1 will propose 81"}
-{"level":"info","time":1592561000552,"message":"sys-1/node-2 will propose 15"}
-{"level":"info","time":1592561000552,"message":"sys-1/node-3 will propose 88"}
-{"level":"info","time":1592561000553,"message":"sys-1/ref-1 will propose 40"}
-{"level":"info","time":1592561000553,"message":"sys-1/ref-2 will propose 52"}
-{"level":"info","time":1592561000554,"message":"Starting system sys-1 of process ref-1 ..."}
-{"level":"info","time":1592561000554,"message":"sys-1/ref-1: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
-{"level":"info","time":1592561000554,"message":"sys-1/ref-3 will propose 88"}
-{"level":"info","time":1592561000554,"message":"Starting system sys-1 of process ref-2 ..."}
-{"level":"info","time":1592561000554,"message":"sys-1/ref-2: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
-{"level":"info","time":1592561000555,"message":"Starting system sys-1 of process ref-3 ..."}
-{"level":"info","time":1592561000555,"message":"sys-1/ref-3: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
-{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592561032206,"message":"Failed to send NETWORK_MESSAGE to node-1"}
-{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592561032283,"message":"Failed to send NETWORK_MESSAGE to node-1"}
-{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592561032284,"message":"Failed to send NETWORK_MESSAGE to node-2"}
-{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592561033208,"message":"Failed to send NETWORK_MESSAGE to node-2"}
-{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592561033286,"message":"Failed to send NETWORK_MESSAGE to node-2"}
-{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592561033287,"message":"Failed to send NETWORK_MESSAGE to node-3"}
-{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592561034211,"message":"Failed to send NETWORK_MESSAGE to node-3"}
-{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592561034289,"message":"Failed to send NETWORK_MESSAGE to node-3"}
-{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592561034290,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"info","time":1592561510946,"message":"Hub listening on localhost:5000"}
+{"level":"info","time":1592561510947,"message":"ref-2: listening on localhost:5002"}
+{"level":"info","time":1592561510947,"message":"ref-1: listening on localhost:5001"}
+{"level":"info","time":1592561510948,"message":"ref-3: listening on localhost:5003"}
+{"level":"info","time":1592561511253,"message":"Received registration from ref-1"}
+{"level":"info","time":1592561511253,"message":"Received registration from ref-2"}
+{"level":"info","time":1592561511253,"message":"Received registration from ref-3"}
+{"level":"info","time":1592561515235,"message":"Received registration from node-1"}
+{"level":"info","time":1592561515236,"message":"Received registration from node-2"}
+{"level":"info","time":1592561515237,"message":"Received registration from node-3"}
+{"level":"info","time":1592561548777,"message":"sys-1/node-1 will propose 90"}
+{"level":"info","time":1592561548778,"message":"sys-1/node-2 will propose 22"}
+{"level":"info","time":1592561548778,"message":"sys-1/node-3 will propose 18"}
+{"level":"info","time":1592561548779,"message":"sys-1/ref-1 will propose 29"}
+{"level":"info","time":1592561548779,"message":"sys-1/ref-2 will propose 67"}
+{"level":"info","time":1592561548779,"message":"Starting system sys-1 of process ref-1 ..."}
+{"level":"info","time":1592561548779,"message":"sys-1/ref-1: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
+{"level":"info","time":1592561548780,"message":"sys-1/ref-3 will propose 61"}
+{"level":"info","time":1592561548780,"message":"Starting system sys-1 of process ref-2 ..."}
+{"level":"info","time":1592561548780,"message":"sys-1/ref-2: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
+{"level":"info","time":1592561548781,"message":"Starting system sys-1 of process ref-3 ..."}
+{"level":"info","time":1592561548781,"message":"sys-1/ref-3: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}

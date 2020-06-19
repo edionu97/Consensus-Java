@@ -23,8 +23,6 @@ public class ConsensusSystemModule implements IConsensus {
 
     @Override
     public void trigger(final Paxos.Message message) {
-
-        System.out.println(message.getSystemId() + " " + message.getNetworkMessage().getMessage().getType());
     }
 
     @Override

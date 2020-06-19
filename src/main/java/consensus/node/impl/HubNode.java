@@ -166,8 +166,4 @@ public class HubNode implements INode {
         //trigger the plDeliver message so that all the abstractions that listen for PL_DELIVER message type to be informed
         consSystem.trigger(plDeliverMessage);
     }
-
-
-
-
 }
