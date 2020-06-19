@@ -92,42 +92,42 @@ public class HubNode implements INode {
     }
 
     /**
-     * Process the received message
-     * If the message is app purpose then start a new instance of consensus module, otherwise, if other than the
-     * AppPurpose message is encountered, the message is pushed into the correct queue (it's system queue), based on
+     * Process the received receivedMessage
+     * If the receivedMessage is app purpose then start a new instance of consensus module, otherwise, if other than the
+     * AppPurpose receivedMessage is encountered, the receivedMessage is pushed into the correct queue (it's system queue), based on
      * it's system id
-     * @param message: the received message
+     * @param receivedMessage: the received receivedMessage
      */
-    private void processMessage(final Paxos.Message message) {
+    private void processMessage(final Paxos.Message receivedMessage) {
 
-        //get the network message
-        final var networkMessage =  message.getNetworkMessage();
-        //get the message from the network
+        //get the network receivedMessage
+        final var networkMessage =  receivedMessage.getNetworkMessage();
+        //get the receivedMessage from the network
         final var innerMessage = networkMessage.getMessage();
         //get the systemId
-        final var systemId = message.getSystemId();
+        final var systemId = receivedMessage.getSystemId();
 
-        //if the message is AppPurpose than start a new consensus module
+        //if the receivedMessage is AppPurpose than start a new consensus module
         if (MessagesHelper.isAppPurpose(innerMessage)) {
             onAppPurpose(innerMessage, systemId);
             return;
         }
 
         //handle other messages, by sending them back into the proper queue
-        onMessage(message, systemId);
+        onMessage(receivedMessage, systemId);
     }
 
     /**
-     * This method is used for handling the AppPurpose message
-     * @param message: the message itself
+     * This method is used for handling the AppPurpose receivedMessage
+     * @param receivedMessage: the receivedMessage itself
      */
-    private void onAppPurpose(final Paxos.Message message, final String systemId) {
+    private void onAppPurpose(final Paxos.Message receivedMessage, final String systemId) {
         //crete a new instance of a consensus system
         var consensusSystemModule = new ConsensusSystemModule(nodePort, hubPort, hubIp, systemId);
         //add it to the map
         sysIdToConsensus.put(systemId, consensusSystemModule);
-        //put the message into the queue (trigger the action)
-        consensusSystemModule.trigger(message);
+        //put the receivedMessage into the queue (trigger the action)
+        consensusSystemModule.trigger(receivedMessage);
     }
 
 
