@@ -1,11 +1,13 @@
 package consensus.module;
 
 import consensus.Paxos;
+import consensus.algorithms.IAbstractionLayer;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public interface IConsensus {
-
     /**
      * Initiates the algorithm
      */
@@ -16,6 +18,18 @@ public interface IConsensus {
      * @param message: the message information
      */
     void trigger(final Paxos.Message message);
+
+    /**
+     * Configure the consensus system
+     * @param actions: defines a set of configuration actions that need to be set on the consensus object
+     */
+    void configure(final List<Consumer<IConsensus>> actions);
+
+    /**
+     * This method adds an another into the layer list
+     * @param layer: the layer that will be added
+     */
+    void pushLayer(final IAbstractionLayer layer);
 
     /**
      * This method it is used in order to identify the process that sent the message, based on it's port

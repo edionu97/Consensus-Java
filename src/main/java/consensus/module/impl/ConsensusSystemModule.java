@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class ConsensusSystemModule implements IConsensus {
 
@@ -62,6 +63,19 @@ public class ConsensusSystemModule implements IConsensus {
                 .setSystemId(systemId)
                 .build()
         );
+    }
+
+    @Override
+    public void configure(final List<Consumer<IConsensus>> configurationActions) {
+        if(configurationActions == null) {
+            return;
+        }
+        configurationActions.forEach(action -> action.accept(this));
+    }
+
+    @Override
+    public void pushLayer(final IAbstractionLayer layer) {
+        abstractionLayers.add(layer);
     }
 
     @Override
