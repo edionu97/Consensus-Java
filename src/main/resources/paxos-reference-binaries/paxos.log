@@ -83,3 +83,52 @@
 {"level":"info","time":1592569896861,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.40 seconds"}
 {"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569896871,"message":"Failed to send NETWORK_MESSAGE to node-3"}
 {"level":"info","time":1592569896872,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.50 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569897860,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569897868,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569897883,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569898862,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569898869,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569898885,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569899865,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569899872,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"info","time":1592569899874,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.50 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569899891,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569900869,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569900883,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569900895,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569901872,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569901886,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569901899,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569902875,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"info","time":1592569902877,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.40 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569902890,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569902902,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569903880,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569903894,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569903904,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569904884,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569904897,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569904908,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569905886,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569905899,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569905913,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569906890,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569906902,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569906916,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569907892,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569907904,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569907919,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569908895,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569908907,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"info","time":1592569908908,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.60 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569908922,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"info","time":1592569908924,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.60 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569909898,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569909912,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592569909926,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569910909,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569910914,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592569910928,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569911912,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569911916,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592569911930,"message":"Failed to send NETWORK_MESSAGE to node-3"}
