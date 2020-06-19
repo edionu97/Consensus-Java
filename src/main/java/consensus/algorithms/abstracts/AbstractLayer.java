@@ -9,5 +9,8 @@ public abstract class AbstractLayer implements IAbstractionLayer {
 
     protected AbstractLayer(final IConsensus consensus) {
         this.consensus = consensus;
+        init();
     }
+
+    protected abstract void init();
 }

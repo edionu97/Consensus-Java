@@ -11,6 +11,11 @@ public class BestEffortBroadcastLayer extends AbstractLayer {
     }
 
     @Override
+    protected void init() {
+
+    }
+
+    @Override
     public boolean onMessage(Paxos.Message message) {
         return false;
     }

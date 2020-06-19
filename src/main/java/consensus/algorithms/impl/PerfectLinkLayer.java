@@ -13,6 +13,11 @@ public class PerfectLinkLayer extends AbstractLayer {
         super(consensus);
     }
 
+    @Override
+    protected void init() {
+        //does nothing on init
+    }
+
     /**
      * This method handles only the PL_SEND message types
      * @param message: the message that appeared into queue

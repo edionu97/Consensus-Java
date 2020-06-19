@@ -14,6 +14,11 @@ public class AppLayer extends AbstractLayer {
         super(consensus);
     }
 
+    @Override
+    protected void init() {
+        //does nothing on init
+    }
+
     /**
      * This abstraction only listens for APP_PURPOSE and UC_DECIDE
      * @param message: the message that appeared into queue

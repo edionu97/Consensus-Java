@@ -11,6 +11,11 @@ public class EventualLeaderDetectorLayer extends AbstractLayer {
     }
 
     @Override
+    protected void init() {
+
+    }
+
+    @Override
     public boolean onMessage(final Paxos.Message message) {
         return false;
     }
