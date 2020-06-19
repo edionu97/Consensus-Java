@@ -1,24 +1,28 @@
 package consensus.node.impl;
 
 import consensus.Paxos;
+import consensus.module.IConsensus;
+import consensus.module.impl.ConsensusSystemModule;
 import consensus.node.INode;
 import utils.messages.MessagesHelper;
 import utils.messages.SendHelper;
 
 import java.io.DataInputStream;
 import java.net.ServerSocket;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static consensus.Paxos.Message.Type.APP_REGISTRATION;
-
 public class HubNode implements INode {
+
     private final String nodeOwner;
     private final int nodeOwnerIndex;
     private final int nodePort;
     private final int hubPort;
     private final String hubIp;
 
+    private final Map<String, IConsensus> sysIdToConsensus = new ConcurrentHashMap<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
@@ -50,24 +54,27 @@ public class HubNode implements INode {
 
             //execute the infinitely read on another thread
             executorService.submit(() -> {
-
-                //infinitely read
+                //infinitely read loop
                 while (true) {
-                    //wait until a message is pushed on the network, and get the message stream
-                    final var messageByteStream = new DataInputStream(socket.accept().getInputStream());
+                    try {
+                        //wait until a message is pushed on the network, and get the message stream
+                        final var messageByteStream = new DataInputStream(socket.accept().getInputStream());
 
-                    //get the message length
-                    final int messageLength = messageByteStream.readInt();
-                    if (messageLength <= 0) {
-                        continue;
+                        //get the message length
+                        final int messageLength = messageByteStream.readInt();
+                        if (messageLength <= 0) {
+                            continue;
+                        }
+
+                        //create a byte array for storing all the message bytes, and store all the message bytes into an array
+                        var byteArray = new byte[messageLength];
+                        messageByteStream.readFully(byteArray, 0, messageLength);
+
+                        //transform the bytes into a Paxos.Message and process the message
+                        processMessage(Paxos.Message.parseFrom(byteArray));
+                    } catch (final Exception ex) {
+                        ex.printStackTrace();
                     }
-
-                    //create a byte array for storing all the message bytes, and store all the message bytes into an array
-                    var byteArray = new byte[messageLength];
-                    messageByteStream.readFully(byteArray, 0, messageLength);
-
-                    //transform the bytes into a Paxos.Message and process the message
-                    processMessage(Paxos.Message.parseFrom(byteArray));
                 }
             });
 
@@ -84,10 +91,82 @@ public class HubNode implements INode {
         SendHelper.sendMessage(registrationMessage, hubIp, hubPort, nodePort);
     }
 
+    /**
+     * Process the received message
+     * If the message is app purpose then start a new instance of consensus module, otherwise, if other than the
+     * AppPurpose message is encountered, the message is pushed into the correct queue (it's system queue), based on
+     * it's system id
+     * @param message: the received message
+     */
     private void processMessage(final Paxos.Message message) {
 
+        //get the network message
+        final var networkMessage =  message.getNetworkMessage();
+        //get the message from the network
+        final var innerMessage = networkMessage.getMessage();
+        //get the systemId
+        final var systemId = message.getSystemId();
 
+        //if the message is AppPurpose than start a new consensus module
+        if (MessagesHelper.isAppPurpose(innerMessage)) {
+            onAppPurpose(innerMessage, systemId);
+            return;
+        }
+
+        //handle other messages, by sending them back into the proper queue
+        onMessage(message, systemId);
     }
+
+    /**
+     * This method is used for handling the AppPurpose message
+     * @param message: the message itself
+     */
+    private void onAppPurpose(final Paxos.Message message, final String systemId) {
+        //crete a new instance of a consensus system
+        var consensusSystemModule = new ConsensusSystemModule(nodePort, hubPort, hubIp, systemId);
+        //add it to the map
+        sysIdToConsensus.put(systemId, consensusSystemModule);
+        //put the message into the queue (trigger the action)
+        consensusSystemModule.trigger(message);
+    }
+
+
+    /**
+     * This is a callback for handling all the messages types received by the node, excepting the AppPurpose receivedMessage
+     * The messages, should be pushed back into the proper system queue (to the proper consensus system)
+     * @param receivedMessage: the receivedMessage
+     * @param systemId: the id of the system
+     */
+    private void onMessage(final Paxos.Message receivedMessage, final String systemId) {
+
+        //get the network receivedMessage
+        final var networkMessage =  receivedMessage.getNetworkMessage();
+        //get the receivedMessage from the network
+        final var innerMessage = networkMessage.getMessage();
+
+        //get the system
+        var consSystem = sysIdToConsensus.get(systemId);
+        if(consSystem == null) {
+            return;
+        }
+
+        //get the sender process, and if the process is not found, do nothing
+        final var senderProcessOptional = consSystem.identifySenderProcessByNetworkMessage(networkMessage);
+        if(senderProcessOptional.isEmpty()){
+            return;
+        }
+
+        //get the sender process
+        final var senderProcess = senderProcessOptional.get();
+
+        //create PL_DELIVER receivedMessage
+        final var plDeliverMessage = MessagesHelper
+                .createPLDeliverMessage(senderProcess, innerMessage, receivedMessage.getAbstractionId());
+
+        //trigger the receivedMessage
+        consSystem.trigger(plDeliverMessage);
+    }
+
 
 
 
