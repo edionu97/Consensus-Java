@@ -7,6 +7,11 @@ import java.util.Optional;
 public interface IConsensus {
 
     /**
+     * Initiates the algorithm
+     */
+    void init();
+
+    /**
      * This method trigger a new event, by sending a message
      * @param message: the message information
      */

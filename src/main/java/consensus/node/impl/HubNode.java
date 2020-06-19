@@ -123,7 +123,9 @@ public class HubNode implements INode {
      */
     private void onAppPurpose(final Paxos.Message receivedMessage, final String systemId) {
         //crete a new instance of a consensus system
-        var consensusSystemModule = new ConsensusSystemModule(nodePort, hubPort, hubIp, systemId);
+        var consensusSystemModule = new ConsensusSystemModule(nodePort, hubPort, hubIp, systemId){{
+            init();
+        }};
         //add it to the map
         sysIdToConsensus.put(systemId, consensusSystemModule);
         //put the receivedMessage into the queue (trigger the action)
