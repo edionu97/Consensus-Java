@@ -3,10 +3,14 @@ package consensus.algorithms.impl;
 import consensus.Paxos;
 import consensus.algorithms.abstracts.AbstractLayer;
 import consensus.module.IConsensus;
+import utils.messages.MessagesHelper;
 import utils.values.ValueHelper;
 
 import java.util.Comparator;
 import java.util.List;
+
+import static consensus.Paxos.Message.Type.EP_ABORT;
+import static consensus.Paxos.Message.Type.EP_PROPOSE;
 
 /**
  * A uniform consensus algorithm based on a fail-noisy model (Leader driven consensus) that runs
@@ -56,30 +60,90 @@ public class UniformConsensusLayer extends AbstractLayer {
     public boolean onMessage(final Paxos.Message message) {
 
         switch (message.getType()) {
-            case UC_PROPOSE: return onUcPropose(message.getUcPropose());
-            case EC_START_EPOCH: return onEcStartEpoch(message.getEcStartEpoch());
-            case EP_ABORTED: return onEpAborted(message.getEpAborted());
-            case EP_DECIDE: return onEpDecide(message.getEpDecide());
+            case UC_PROPOSE:
+                return onUcPropose(message.getUcPropose());
+            case EC_START_EPOCH:
+                return onEcStartEpoch(message.getEcStartEpoch());
+            case EP_ABORTED:
+                return onEpAborted(message.getEpAborted());
+            case EP_DECIDE:
+                return onEpDecide(message.getEpDecide());
         }
 
         return false;
     }
 
+    /**
+     * Handle the ucPropose message, by updating the val
+     * Also taking in consideration that val is part of condition that could trigger EP_PROPOSE, we need to check
+     * if all the conditions are met
+     * @param ucPropose: the ucPropose message
+     * @return true
+     */
     private boolean onUcPropose(final Paxos.UcPropose ucPropose) {
-
+        this.val = ucPropose.getValue();
+        checkEventTriggerCondition();
         return true;
     }
 
+    /**
+     * Handle the EcStartEpoch event
+     * @param ecStartEpoch: the ec start epoch message
+     * @return true
+     */
     private boolean onEcStartEpoch(final Paxos.EcStartEpoch ecStartEpoch) {
+        //modify the leader and the timestamp
+        newl = ecStartEpoch.getNewLeader();
+        newts = ecStartEpoch.getNewTimestamp();
+
+        //create the message
+        final var epAbortMessage = MessagesHelper.createEpAbortMessage();
+
+        //put the message into queue
+        consensus.trigger(epAbortMessage);
         return true;
     }
 
 
+    /**
+     * Handle the epAborted message
+     * @param epAborted: the epAborted message
+     * @return true if the ets == getEts or false otherwise
+     */
     private boolean onEpAborted(final Paxos.EpAborted epAborted) {
+        //check if the event condition is met
+        if(ets != epAborted.getEts()) {
+            return false;
+        }
+
+        //modify the values
+        ets = newts;
+        l = newl;
+        proposed = false;
+        startNewEpoch(ets, epAborted.getValueTimestamp(), epAborted.getValue());
+
+        //check also for the trigger condition
+        checkEventTriggerCondition();
         return true;
     }
 
+    /**
+     * Handle the EpDecide event
+     * @param epDecide: the EP_Decide message
+     * @return true if the event condition is met or false otherwise
+     */
     private boolean onEpDecide(final Paxos.EpDecide epDecide) {
+        //check the event condition
+        if(ets != epDecide.getEts()) {
+            return false;
+        }
+
+        //if not decided, decide the ep value
+        if(!decided) {
+            decided = true;
+            consensus.trigger(MessagesHelper
+                    .createUcDecideMessage(ValueHelper.makeCopy(epDecide.getValue())));
+        }
         return true;
     }
 
@@ -100,5 +164,23 @@ public class UniformConsensusLayer extends AbstractLayer {
         return processIdList
                 .stream()
                 .min(Comparator.comparingInt(Paxos.ProcessId::getRank)).get();
+    }
+
+    /**
+     * This is the function that checks if the EP_Propose message will be send
+     */
+    private void checkEventTriggerCondition() {
+
+        //if the condition is not met, do nothing
+        if (!(l.getPort() == consensus.getCurrentPID().getPort() && val.getDefined() && !proposed)) {
+            return;
+        }
+
+        //modify the values accordingly to the algorithm
+        proposed = true;
+        final var epProposeMessage = MessagesHelper.createEpProposeMessage(ValueHelper.makeCopy(val));
+
+        //push the message into queue
+        consensus.trigger(epProposeMessage);
     }
 }

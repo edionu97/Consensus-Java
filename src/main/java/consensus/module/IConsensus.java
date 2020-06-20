@@ -62,6 +62,12 @@ public interface IConsensus {
     int getNodePort();
 
     /**
+     * @return an instance of a ProcessId representing the PID of the running process
+     */
+    Paxos.ProcessId getCurrentPID();
+
+
+    /**
      * @return a list of process
      */
     List<Paxos.ProcessId> getProcess();

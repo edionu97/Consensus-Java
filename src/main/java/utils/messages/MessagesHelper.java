@@ -1,6 +1,7 @@
 package utils.messages;
 
 import consensus.Paxos;
+import utils.values.ValueHelper;
 
 import static consensus.Paxos.Message.Type.*;
 
@@ -60,6 +61,7 @@ public class MessagesHelper {
 
     /**
      * Create and configure an app decide message
+     *
      * @param systemId: the id of the system
      * @param ucDecide: the uc decide
      * @return a properly configured AppDecide message
@@ -71,6 +73,48 @@ public class MessagesHelper {
                 .setAppDecide(Paxos.AppDecide.newBuilder()
                         .setValue(ucDecide.getValue())
                         .build())
+                .build();
+    }
+
+    /**
+     * Create an instance of EP_PROPOSE message
+     *
+     * @param value: the value that will be send into the message as proposed value
+     * @return a fully configured EP_PROPOSE message
+     */
+    public static Paxos.Message createEpProposeMessage(final Paxos.Value value) {
+        return Paxos.Message.newBuilder()
+                .setType(EP_PROPOSE)
+                .setEpPropose(Paxos.EpPropose.newBuilder()
+                        .setValue(value)
+                        .build())
+                .build();
+    }
+
+    /**
+     * Crete an instance of EP_ABORT message
+     *
+     * @return a fully configured instance of epAbortMessage
+     */
+    public static Paxos.Message createEpAbortMessage() {
+        return Paxos.Message.newBuilder()
+                .setType(EP_ABORT)
+                .setEpAbort(Paxos.EpAbort.newBuilder()
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create the UC_DECIDE message
+     * @param value: the decided value
+     * @return a fully configured UC_DECIDE message
+     */
+    public static Paxos.Message createUcDecideMessage(final Paxos.Value value) {
+        return Paxos.Message.newBuilder()
+                .setType(UC_DECIDE)
+                .setUcDecide(Paxos.UcDecide
+                        .newBuilder()
+                        .setValue(value).build())
                 .build();
     }
 

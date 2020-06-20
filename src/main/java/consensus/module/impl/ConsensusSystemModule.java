@@ -17,6 +17,7 @@ public class ConsensusSystemModule implements IConsensus {
     private int nodePort;
     private String hubIp;
     private final String systemId;
+    private Paxos.ProcessId currentProcessPid;
 
     private final List<Paxos.ProcessId> processList = new CopyOnWriteArrayList<>();
     private final List<IAbstractionLayer> abstractionLayers = new CopyOnWriteArrayList<>();
@@ -79,8 +80,10 @@ public class ConsensusSystemModule implements IConsensus {
     }
 
     @Override
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public void alterProcessList(final List<Paxos.ProcessId> processIds) {
         processList.addAll(processIds);
+        currentProcessPid = getCurrentProcessPid().get();
     }
 
     @Override
@@ -101,6 +104,11 @@ public class ConsensusSystemModule implements IConsensus {
     @Override
     public int getNodePort() {
         return nodePort;
+    }
+
+    @Override
+    public Paxos.ProcessId getCurrentPID() {
+        return currentProcessPid;
     }
 
     @Override
@@ -133,5 +141,15 @@ public class ConsensusSystemModule implements IConsensus {
         }
         //return the result
         return messageWasProcessed;
+    }
+
+    /**
+     * @return the process that have the same port with the nodePort aka the process into that the current system runs
+     */
+    private Optional<Paxos.ProcessId> getCurrentProcessPid() {
+        return processList
+                .stream()
+                .filter(process -> process.getPort() == nodePort)
+                .findFirst();
     }
 }
