@@ -303,6 +303,91 @@ public class MessagesHelper {
     }
 
     /**
+     * Create an EcNewEpoch message
+     *
+     * @param abstractionId: the id of the abstraction
+     * @param timestamp:     the value of the timestamp
+     * @return a fully configured EC_New_Message
+     */
+    public static Paxos.Message createEcNewEpoch(final String abstractionId, final int timestamp) {
+        return Paxos.Message.newBuilder()
+                .setType(BEB_BROADCAST)
+                .setBebBroadcast(Paxos.BebBroadcast.newBuilder()
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setAbstractionId(abstractionId)
+                                .setType(EC_NEW_EPOCH_)
+                                .setEcNewEpoch(Paxos.EcNewEpoch_.newBuilder()
+                                        .setTimestamp(timestamp)
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * Creates a new exStartEpochMessage
+     *
+     * @param abstractionId: the abstraction's identifier
+     * @param timestamp:     the new value of the timestamp
+     * @param leader:        the new leader
+     * @return a fully configured EcStartEpochMessage
+     */
+    public static Paxos.Message createEcStartEpochMessage(final String abstractionId,
+                                                          final int timestamp, final Paxos.ProcessId leader) {
+        return Paxos.Message.newBuilder()
+                .setAbstractionId(abstractionId)
+                .setType(EC_START_EPOCH)
+                .setEcStartEpoch(Paxos.EcStartEpoch.newBuilder()
+                        .setNewTimestamp(timestamp)
+                        .setNewLeader(leader)
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create a nack message
+     *
+     * @param abstractionId: the abstraction's id
+     * @param destination:   the destination process
+     * @return a fully configured EcNackMessage
+     */
+    public static Paxos.Message createEcNackMessage(final String abstractionId, final Paxos.ProcessId destination) {
+        return Paxos.Message.newBuilder()
+                .setType(PL_SEND)
+                .setPlSend(Paxos.PlSend.newBuilder()
+                        .setDestination(destination)
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setAbstractionId(abstractionId)
+                                .setType(EC_NACK_)
+                                .setEcNack(Paxos.EcNack_.newBuilder()
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create a ec new epoch message
+     * @param abstractionId: the abstraction's id
+     * @param timestamp: the timestamp
+     * @return a fully configured EC_NEW_EPOCH message
+     */
+    public static Paxos.Message createEcNewEpochMessage(final String abstractionId, final int timestamp){
+        return Paxos.Message.newBuilder()
+                .setType(BEB_BROADCAST)
+                .setBebBroadcast(Paxos.BebBroadcast.newBuilder()
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setAbstractionId(abstractionId)
+                                .setType(EC_NEW_EPOCH_)
+                                .setEcNewEpoch(Paxos.EcNewEpoch_.newBuilder()
+                                        .setTimestamp(timestamp)
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
      * Check if the message is app purpose
      *
      * @param message: Paxos.Message
