@@ -1,30 +1,62 @@
-{"level":"info","time":1592640283020,"message":"Hub listening on localhost:5000"}
-{"level":"info","time":1592640283021,"message":"ref-3: listening on localhost:5003"}
-{"level":"info","time":1592640283021,"message":"ref-1: listening on localhost:5001"}
-{"level":"info","time":1592640283021,"message":"ref-2: listening on localhost:5002"}
-{"level":"info","time":1592640283325,"message":"Received registration from ref-3"}
-{"level":"info","time":1592640283325,"message":"Received registration from ref-2"}
-{"level":"info","time":1592640283325,"message":"Received registration from ref-1"}
-{"level":"info","time":1592640286941,"message":"Received registration from node-1"}
-{"level":"info","time":1592640286942,"message":"Received registration from node-2"}
-{"level":"info","time":1592640286943,"message":"Received registration from node-3"}
-{"level":"info","time":1592640296414,"message":"sys-1/node-1 will propose 94"}
-{"level":"info","time":1592640296414,"message":"sys-1/node-2 will propose 36"}
-{"level":"info","time":1592640296415,"message":"sys-1/node-3 will propose 52"}
-{"level":"info","time":1592640296416,"message":"sys-1/ref-1 will propose 62"}
-{"level":"info","time":1592640296416,"message":"sys-1/ref-2 will propose 31"}
-{"level":"info","time":1592640296416,"message":"Starting system sys-1 of process ref-1 ..."}
-{"level":"info","time":1592640296417,"message":"sys-1/ref-1: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
-{"level":"info","time":1592640296417,"message":"sys-1/ref-3 will propose 61"}
-{"level":"info","time":1592640296417,"message":"Starting system sys-1 of process ref-2 ..."}
-{"level":"info","time":1592640296417,"message":"sys-1/ref-2: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
-{"level":"info","time":1592640296418,"message":"Starting system sys-1 of process ref-3 ..."}
-{"level":"info","time":1592640296418,"message":"sys-1/ref-3: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
-{"level":"info","time":1592640296820,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.20 seconds"}
-{"level":"info","time":1592640296821,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.20 seconds"}
-{"level":"info","time":1592640296821,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.20 seconds"}
-{"level":"info","time":1592640297021,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.30 seconds"}
-{"level":"info","time":1592640297022,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.30 seconds"}
-{"level":"info","time":1592640297222,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.30 seconds"}
-{"level":"info","time":1592640297321,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.40 seconds"}
-{"level":"info","time":1592640297322,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.40 seconds"}
+{"level":"info","time":1592642530859,"message":"Hub listening on localhost:5000"}
+{"level":"info","time":1592642530860,"message":"ref-2: listening on localhost:5002"}
+{"level":"info","time":1592642530860,"message":"ref-1: listening on localhost:5001"}
+{"level":"info","time":1592642530860,"message":"ref-3: listening on localhost:5003"}
+{"level":"info","time":1592642531165,"message":"Received registration from ref-3"}
+{"level":"info","time":1592642531165,"message":"Received registration from ref-2"}
+{"level":"info","time":1592642531165,"message":"Received registration from ref-1"}
+{"level":"info","time":1592642534630,"message":"Received registration from node-1"}
+{"level":"info","time":1592642534632,"message":"Received registration from node-2"}
+{"level":"info","time":1592642534633,"message":"Received registration from node-3"}
+{"level":"info","time":1592642540217,"message":"sys-1/node-1 will propose 26"}
+{"level":"info","time":1592642540218,"message":"sys-1/node-2 will propose 76"}
+{"level":"info","time":1592642540218,"message":"sys-1/node-3 will propose 67"}
+{"level":"info","time":1592642540219,"message":"sys-1/ref-1 will propose 86"}
+{"level":"info","time":1592642540219,"message":"sys-1/ref-2 will propose 77"}
+{"level":"info","time":1592642540219,"message":"Starting system sys-1 of process ref-1 ..."}
+{"level":"info","time":1592642540219,"message":"sys-1/ref-1: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
+{"level":"info","time":1592642540220,"message":"sys-1/ref-3 will propose 54"}
+{"level":"info","time":1592642540220,"message":"Starting system sys-1 of process ref-2 ..."}
+{"level":"info","time":1592642540220,"message":"sys-1/ref-2: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
+{"level":"info","time":1592642540220,"message":"Starting system sys-1 of process ref-3 ..."}
+{"level":"info","time":1592642540221,"message":"sys-1/ref-3: Starting consensus among node-1, node-2, node-3, ref-1, ref-2, ref-3"}
+{"level":"info","time":1592642540522,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.20 seconds"}
+{"level":"info","time":1592642540522,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.20 seconds"}
+{"level":"info","time":1592642540523,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.20 seconds"}
+{"level":"info","time":1592642540723,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.30 seconds"}
+{"level":"info","time":1592642540723,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.30 seconds"}
+{"level":"info","time":1592642540724,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.30 seconds"}
+{"level":"info","time":1592642541025,"message":"sys-1/ref-3/EPFD: Increased timeout to 0.40 seconds"}
+{"level":"info","time":1592642542470,"message":"sys-1/node-2 decided 26"}
+{"level":"info","time":1592642542566,"message":"sys-1/node-3 decided 26"}
+{"level":"info","time":1592642542582,"message":"sys-1/ref-1 decided 26"}
+{"level":"info","time":1592642542593,"message":"sys-1/ref-2 decided 26"}
+{"level":"info","time":1592642542604,"message":"sys-1/ref-3 decided 26"}
+{"level":"info","time":1592642542783,"message":"sys-1/node-1 decided 26"}
+{"level":"info","time":1592642542882,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.40 seconds"}
+{"level":"info","time":1592642542893,"message":"sys-1/ref-2/EPFD: Increased timeout to 0.40 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642558066,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642558337,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642558339,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642559069,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642559338,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642559341,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642560072,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642560343,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642560345,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642561075,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642561345,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642561349,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642562078,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642562346,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642562350,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642563081,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642563350,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642563350,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"info","time":1592642563511,"message":"sys-1/ref-1/EPFD: Increased timeout to 0.50 seconds"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642564085,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642564508,"message":"Failed to send NETWORK_MESSAGE to node-1"}
+{"level":"error","error":"dial tcp 127.0.0.1:5013: connectex: No connection could be made because the target machine actively refused it.","time":1592642564513,"message":"Failed to send NETWORK_MESSAGE to node-3"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642565087,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5012: connectex: No connection could be made because the target machine actively refused it.","time":1592642565511,"message":"Failed to send NETWORK_MESSAGE to node-2"}
+{"level":"error","error":"dial tcp 127.0.0.1:5011: connectex: No connection could be made because the target machine actively refused it.","time":1592642565515,"message":"Failed to send NETWORK_MESSAGE to node-1"}

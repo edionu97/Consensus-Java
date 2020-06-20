@@ -1,7 +1,6 @@
 package utils.messages;
 
 import consensus.Paxos;
-import utils.values.ValueHelper;
 
 import static consensus.Paxos.Message.Type.*;
 
@@ -40,6 +39,150 @@ public class MessagesHelper {
                 .setPlDeliver(Paxos.PlDeliver.newBuilder()
                         .setMessage(message)
                         .setSender(sender)
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create the EpStateMessage
+     *
+     * @param valueTimestamp:  the timestamp of the value
+     * @param messageReceiver: the receiver of the message
+     * @param value:           the value of the value
+     * @return a fully configured instance of the EpStateMessage
+     */
+    public static Paxos.Message createEpStateMessage(final int valueTimestamp,
+                                                     final Paxos.ProcessId messageReceiver, final Paxos.Value value) {
+
+        //create the epState message
+        final var epStateMessage = Paxos.Message.newBuilder()
+                .setType(EP_STATE_)
+                .setEpState(Paxos.EpState_.newBuilder()
+                        .setValueTimestamp(valueTimestamp)
+                        .setValue(value)
+                        .build())
+                .build();
+
+        //pLSend message
+        return Paxos.Message.newBuilder()
+                .setType(PL_SEND)
+                .setPlSend(Paxos.PlSend.newBuilder()
+                        .setDestination(messageReceiver)
+                        .setMessage(epStateMessage)
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create the EpAcceptMessage
+     *
+     * @param destination: the destination of the message
+     * @return a fully configured EP_Accept message
+     */
+    public static Paxos.Message createEpAcceptMessage(final Paxos.ProcessId destination) {
+        return Paxos.Message.newBuilder()
+                .setType(PL_SEND)
+                .setPlSend(Paxos.PlSend.newBuilder()
+                        .setDestination(destination)
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setType(EP_ACCEPT_)
+                                .setEpAccept(Paxos.EpAccept_.newBuilder()
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * This method is used for creating EpPurposeRead message
+     *
+     * @return a fully configured EpReadMessage
+     */
+    public static Paxos.Message createEpPurposeReadMessage() {
+        return Paxos.Message.newBuilder()
+                .setType(BEB_BROADCAST)
+                .setBebBroadcast(Paxos.BebBroadcast.newBuilder()
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setType(EP_READ_)
+                                .setEpRead(Paxos.EpRead_.newBuilder()
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create ep decide message
+     *
+     * @param timestamp:    the timestamp of the message
+     * @param decidedValue: the agreed value
+     * @return a fully configured Ep_Decide message
+     */
+    public static Paxos.Message createEpDecideMessage(final int timestamp, final Paxos.Value decidedValue) {
+        return Paxos.Message.newBuilder()
+                .setType(EP_DECIDE)
+                .setEpDecide(Paxos.EpDecide.newBuilder()
+                        .setEts(timestamp)
+                        .setValue(decidedValue)
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create the EP_WRITE message
+     *
+     * @param value: the value that needs to be written
+     * @return a fully configured message
+     */
+    public static Paxos.Message createEpWriteMessage(final Paxos.Value value) {
+        return Paxos.Message.newBuilder()
+                .setType(BEB_BROADCAST)
+                .setBebBroadcast(Paxos.BebBroadcast.newBuilder()
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setType(EP_WRITE_)
+                                .setEpWrite(Paxos.EpWrite_.newBuilder()
+                                        .setValue(value)
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create an EpDecidedMessage
+     *
+     * @param decidedValue: the value on which the process is decided
+     * @return a fully configured value
+     */
+    public static Paxos.Message createEpDecidedMessage(final Paxos.Value decidedValue) {
+        return Paxos.Message.newBuilder()
+                .setType(BEB_BROADCAST)
+                .setBebBroadcast(Paxos.BebBroadcast.newBuilder()
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setType(EP_DECIDED_)
+                                .setEpDecided(Paxos.EpDecided_.newBuilder()
+                                        .setValue(decidedValue)
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create the EpAbortedMessage
+     *
+     * @param ets:       the timestamp (epoch stating timestamp)
+     * @param timestamp: the state value timestamp
+     * @param value:     the state value
+     * @return a fully configured EpAbortedMessage
+     */
+    public static Paxos.Message createEpAbortedMessage(final int ets, final int timestamp, final Paxos.Value value) {
+        return Paxos.Message.newBuilder()
+                .setType(EP_ABORTED)
+                .setEpAborted(Paxos.EpAborted.newBuilder()
+                        .setEts(ets)
+                        .setValueTimestamp(timestamp)
+                        .setValue(value)
                         .build())
                 .build();
     }
@@ -106,6 +249,7 @@ public class MessagesHelper {
 
     /**
      * Create the UC_DECIDE message
+     *
      * @param value: the decided value
      * @return a fully configured UC_DECIDE message
      */
@@ -120,9 +264,10 @@ public class MessagesHelper {
 
     /**
      * Create a beb broadcast message
-     * @param abstractionId: the abstraction's identifier
+     *
+     * @param abstractionId:  the abstraction's identifier
      * @param destinationPid: the destination process (the process that will receive the information)
-     * @param msg: the message that will be sent
+     * @param msg:            the message that will be sent
      * @return a fully configured beb message
      */
     public static Paxos.Message createPlSendMessage(final String abstractionId,
@@ -139,9 +284,10 @@ public class MessagesHelper {
 
     /**
      * Create beb deliver message
+     *
      * @param bebIdentifier: the beb deliver abstraction's ID
-     * @param sender: the process that send the message
-     * @param message: the message itself
+     * @param sender:        the process that send the message
+     * @param message:       the message itself
      * @return a fully configured bebDeliverMessage
      */
     public static Paxos.Message createBebDeliver(final String bebIdentifier,
