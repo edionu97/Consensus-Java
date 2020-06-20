@@ -75,7 +75,6 @@ public class EpochChangeAbstraction extends AbstractAbstraction {
         //create a new epoch message
         final var ecNewEpochMessage = MessagesHelper.createEcNewEpoch(abstractionId, this.ts);
 
-        
         //put the message into queue
         consensus.trigger(ecNewEpochMessage);
         return true;
