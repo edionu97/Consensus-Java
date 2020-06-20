@@ -9,9 +9,6 @@ import utils.values.ValueHelper;
 import java.util.Comparator;
 import java.util.List;
 
-import static consensus.Paxos.Message.Type.EP_ABORT;
-import static consensus.Paxos.Message.Type.EP_PROPOSE;
-
 /**
  * A uniform consensus algorithm based on a fail-noisy model (Leader driven consensus) that runs
  * through a sequence of epochs. The value that is decided by the consensus algorithm is the value
