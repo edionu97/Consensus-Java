@@ -119,6 +119,44 @@ public class MessagesHelper {
     }
 
     /**
+     * Create a beb broadcast message
+     * @param abstractionId: the abstraction's identifier
+     * @param destinationPid: the destination process (the process that will receive the information)
+     * @param msg: the message that will be sent
+     * @return a fully configured beb message
+     */
+    public static Paxos.Message createPlSendMessage(final String abstractionId,
+                                                    final Paxos.ProcessId destinationPid, final Paxos.Message msg) {
+        return Paxos.Message.newBuilder()
+                .setType(PL_SEND)
+                .setAbstractionId(abstractionId)
+                .setPlSend(Paxos.PlSend.newBuilder()
+                        .setDestination(destinationPid)
+                        .setMessage(msg)
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create beb deliver message
+     * @param bebIdentifier: the beb deliver abstraction's ID
+     * @param sender: the process that send the message
+     * @param message: the message itself
+     * @return a fully configured bebDeliverMessage
+     */
+    public static Paxos.Message createBebDeliver(final String bebIdentifier,
+                                                 final Paxos.ProcessId sender, final Paxos.Message message) {
+        return Paxos.Message.newBuilder()
+                .setType(BEB_DELIVER)
+                .setAbstractionId(bebIdentifier)
+                .setBebDeliver(Paxos.BebDeliver.newBuilder()
+                        .setSender(sender)
+                        .setMessage(message)
+                        .build())
+                .build();
+    }
+
+    /**
      * Check if the message is app purpose
      *
      * @param message: Paxos.Message

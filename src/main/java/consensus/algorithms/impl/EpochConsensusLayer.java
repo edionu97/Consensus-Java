@@ -28,7 +28,7 @@ import consensus.module.IConsensus;
  */
 public class EpochConsensusLayer extends AbstractLayer {
 
-    protected EpochConsensusLayer(final IConsensus consensus, final int ets, Paxos.EpState_ epState) {
+    protected EpochConsensusLayer(final IConsensus consensus, final int ets, final Paxos.EpState_ epState) {
         super(consensus);
     }
 

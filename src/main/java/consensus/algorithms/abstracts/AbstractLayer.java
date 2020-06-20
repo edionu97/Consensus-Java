@@ -5,6 +5,7 @@ import consensus.module.IConsensus;
 
 public abstract class AbstractLayer implements IAbstractionLayer {
 
+    protected String abstractionId;
     protected final IConsensus consensus;
 
     protected AbstractLayer(final IConsensus consensus) {
