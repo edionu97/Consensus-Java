@@ -54,7 +54,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
     @Override
     protected void init() {
         accepted = 0;
-        canHandleMessages = false;
+        canHandleMessages = true;
         tmpVal = ValueHelper.getUndefinedValue();
     }
 
@@ -151,11 +151,8 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
         //get the ep write
         final var epWriteMessage = bebDeliverWrite.getMessage().getEpWrite();
 
-        //change the inner state (
-        this.state = Paxos.EpState_.newBuilder()
-                .setValueTimestamp(ets)
-                .setValue(epWriteMessage.getValue())
-                .build();
+        //change the inner state
+        this.state = createState(ets, epWriteMessage.getValue());
 
         //create an epAccept message
         final var epAcceptMessage = MessagesHelper
