@@ -1,15 +1,15 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 import utils.messages.SendHelper;
 
 import static consensus.Paxos.Message.Type.PL_SEND;
 
-public class PerfectLinkLayer extends AbstractLayer {
+public class PerfectLinkAbstraction extends AbstractAbstraction {
 
-    public PerfectLinkLayer(final IConsensus consensus) {
+    public PerfectLinkAbstraction(final IConsensus consensus) {
         super(consensus);
     }
 

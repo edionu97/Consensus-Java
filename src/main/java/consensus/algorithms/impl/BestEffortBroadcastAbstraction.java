@@ -1,7 +1,7 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 import utils.messages.MessagesHelper;
 
@@ -11,9 +11,9 @@ import utils.messages.MessagesHelper;
  * Messages are unique, that is, no process ever broadcasts the same message
  * twice and furthermore, no two processes ever broadcast the same message.
  */
-public class BestEffortBroadcastLayer extends AbstractLayer {
+public class BestEffortBroadcastAbstraction extends AbstractAbstraction {
 
-    public BestEffortBroadcastLayer(final IConsensus consensus) {
+    public BestEffortBroadcastAbstraction(final IConsensus consensus) {
         super(consensus);
     }
 

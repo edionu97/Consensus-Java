@@ -1,7 +1,7 @@
 package consensus.node.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.impl.AppLayer;
+import consensus.algorithms.impl.AppAbstraction;
 import consensus.module.IConsensus;
 import consensus.module.impl.ConsensusSystemModule;
 import consensus.node.INode;
@@ -10,7 +10,6 @@ import utils.messages.SendHelper;
 
 import java.io.DataInputStream;
 import java.net.ServerSocket;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -133,7 +132,7 @@ public class HubNode implements INode {
             //the first layer is the app layer
             configure(Collections
                     .singletonList(
-                            (consensus) -> consensus.pushLayer(new AppLayer(consensus))));
+                            (consensus) -> consensus.pushLayer(new AppAbstraction(consensus))));
         }};
         //add it to the map
         sysIdToConsensus.put(systemId, consensusSystemModule);

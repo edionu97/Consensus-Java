@@ -1,7 +1,7 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 
 /**
@@ -26,9 +26,9 @@ import consensus.module.IConsensus;
  * timestamp/value pair with the written value, and halts. It is important that the instance performs
  * sno further steps.
  */
-public class EpochConsensusLayer extends AbstractLayer {
+public class EpochConsensusAbstraction extends AbstractAbstraction {
 
-    protected EpochConsensusLayer(final IConsensus consensus, final int ets, final Paxos.EpState_ epState) {
+    protected EpochConsensusAbstraction(final IConsensus consensus, final int ets, final Paxos.EpState_ epState) {
         super(consensus);
     }
 

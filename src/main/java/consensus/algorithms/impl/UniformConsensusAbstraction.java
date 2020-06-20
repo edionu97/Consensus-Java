@@ -1,7 +1,7 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 import utils.messages.MessagesHelper;
 import utils.values.ValueHelper;
@@ -23,7 +23,7 @@ import java.util.List;
  * also decides that value in consensus, but continues to participate in the consensus
  * algorithm, to help other processes decide.
  */
-public class UniformConsensusLayer extends AbstractLayer {
+public class UniformConsensusAbstraction extends AbstractAbstraction {
 
     private int ets;
     private int newts;
@@ -36,7 +36,7 @@ public class UniformConsensusLayer extends AbstractLayer {
     private Paxos.ProcessId l;
     private Paxos.ProcessId newl;
 
-    public UniformConsensusLayer(final IConsensus consensus) {
+    public UniformConsensusAbstraction(final IConsensus consensus) {
         super(consensus);
     }
 
@@ -152,7 +152,7 @@ public class UniformConsensusLayer extends AbstractLayer {
                 .build();
 
         //add new layer into the consensus (epoch consensus layer)
-        consensus.pushLayer(new EpochConsensusLayer(consensus, ets, state_));
+        consensus.pushLayer(new EpochConsensusAbstraction(consensus, ets, state_));
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

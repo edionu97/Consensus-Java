@@ -1,12 +1,12 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 
-public class EventuallyPerfectFailureDetectorLayer extends AbstractLayer {
+public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
 
-    public EventuallyPerfectFailureDetectorLayer(final IConsensus consensus) {
+    public EventualLeaderDetectorAbstraction(final IConsensus consensus) {
         super(consensus);
     }
 

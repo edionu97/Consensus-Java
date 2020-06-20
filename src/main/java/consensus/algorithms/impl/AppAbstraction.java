@@ -1,16 +1,16 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 import utils.messages.MessagesHelper;
 import utils.messages.SendHelper;
 
 import java.util.Arrays;
 
-public class AppLayer extends AbstractLayer {
+public class AppAbstraction extends AbstractAbstraction {
 
-    public AppLayer(final IConsensus consensus) {
+    public AppAbstraction(final IConsensus consensus) {
         super(consensus);
     }
 
@@ -47,12 +47,12 @@ public class AppLayer extends AbstractLayer {
                 //set the process list
                 (consensus) -> consensus.alterProcessList(processList),
                 //push the other layers into the consensus module
-                (consensus) -> consensus.pushLayer(new UniformConsensusLayer(consensus)),
-                (consensus) -> consensus.pushLayer(new EpochChangeLayer(consensus)),
-                (consensus) -> consensus.pushLayer(new EventuallyPerfectFailureDetectorLayer(consensus)),
-                (consensus) -> consensus.pushLayer(new EventualLeaderDetectorLayer(consensus)),
-                (consensus) -> consensus.pushLayer(new BestEffortBroadcastLayer(consensus)),
-                (consensus) -> consensus.pushLayer(new PerfectLinkLayer(consensus))
+                (consensus) -> consensus.pushLayer(new UniformConsensusAbstraction(consensus)),
+                (consensus) -> consensus.pushLayer(new EpochChangeAbstraction(consensus)),
+                (consensus) -> consensus.pushLayer(new EventuallyPerfectFailureDetectorAbstraction(consensus)),
+                (consensus) -> consensus.pushLayer(new EventualLeaderDetectorAbstraction(consensus)),
+                (consensus) -> consensus.pushLayer(new BestEffortBroadcastAbstraction(consensus)),
+                (consensus) -> consensus.pushLayer(new PerfectLinkAbstraction(consensus))
         ));
 
         //trigger the appPropose message

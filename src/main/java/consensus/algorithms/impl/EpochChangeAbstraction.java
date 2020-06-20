@@ -1,12 +1,12 @@
 package consensus.algorithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractLayer;
+import consensus.algorithms.abstracts.AbstractAbstraction;
 import consensus.module.IConsensus;
 
-public class EpochChangeLayer  extends AbstractLayer {
+public class EpochChangeAbstraction extends AbstractAbstraction {
 
-    public EpochChangeLayer(final IConsensus consensus) {
+    public EpochChangeAbstraction(final IConsensus consensus) {
         super(consensus);
     }
 
