@@ -2,5 +2,6 @@
   "ownerName": "node",
   "nodePort" : 5010,
   "hubPort" : 5000,
-  "hubIp" : "localhost"
+  "hubIp" : "localhost",
+  "nodeNr": 3
 }

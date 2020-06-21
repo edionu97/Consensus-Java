@@ -25,8 +25,8 @@ public class SendHelper {
             var outputStream = socket.getOutputStream();
             outputStream.write(sentMessageToBytes(message, nodePort));
             outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            System.out.println("SendHelper -> Connection lost, cannot send message...");
         }
     }
 
@@ -51,7 +51,5 @@ public class SendHelper {
         final var messageBytes = sentMessage.toByteArray();
         return ByteBuffer.allocate(Integer.BYTES + messageBytes.length).putInt(messageBytes.length).put(messageBytes).array();
     }
-
-
 
 }

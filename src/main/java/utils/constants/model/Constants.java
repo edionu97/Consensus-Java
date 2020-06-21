@@ -7,6 +7,9 @@ import java.io.Serializable;
 public class Constants implements Serializable  {
 
     @JsonProperty
+    private int nodeNr;
+
+    @JsonProperty
     private String hubIp;
 
     @JsonProperty
@@ -48,5 +51,13 @@ public class Constants implements Serializable  {
 
     public void setHubPort(final int hubPort) {
         this.hubPort = hubPort;
+    }
+
+    public int getNodeNr() {
+        return nodeNr;
+    }
+
+    public void setNodeNr(final int nodeNr) {
+        this.nodeNr = nodeNr;
     }
 }

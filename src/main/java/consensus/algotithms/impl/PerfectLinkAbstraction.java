@@ -1,15 +1,15 @@
-package consensus.algorithms.impl;
+package consensus.algotithms.impl;
 
-import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.abstracts.AbstractAbstractionLayer;
+import consensus.module.IConsensusModule;
 import utils.messages.SendHelper;
 
+import static consensus.Paxos.Message;
 import static consensus.Paxos.Message.Type.PL_SEND;
 
-public class PerfectLinkAbstraction extends AbstractAbstraction {
+public class PerfectLinkAbstraction extends AbstractAbstractionLayer {
 
-    public PerfectLinkAbstraction(final IConsensus consensus) {
+    public PerfectLinkAbstraction(final IConsensusModule consensus) {
         super(consensus);
     }
 
@@ -24,8 +24,7 @@ public class PerfectLinkAbstraction extends AbstractAbstraction {
      * @return true if the message was handled or false otherwise
      */
     @Override
-    public boolean onMessage(final Paxos.Message message) {
-
+    public boolean onMessage(Message message) {
         //if the message type is not PL_SEND than ignore the message
         if (!PL_SEND.equals(message.getType())) {
             return false;
@@ -38,5 +37,6 @@ public class PerfectLinkAbstraction extends AbstractAbstraction {
         SendHelper.sendMessage(message, destinationProcess.getHost(), destinationProcess.getPort(), consensus.getNodePort());
         return true;
     }
+
 
 }

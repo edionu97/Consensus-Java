@@ -1,4 +1,4 @@
-package utils.messages;
+package utils.processes;
 
 import consensus.Paxos;
 

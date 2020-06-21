@@ -1,9 +1,11 @@
-package consensus.algorithms.impl;
+package consensus.algotithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.abstracts.AbstractAbstractionLayer;
+import consensus.module.IConsensusModule;
 import utils.messages.MessagesHelper;
+
+import static consensus.Paxos.*;
 
 /**
  * A broadcast abstraction that enables a process to send a message, in a one-shot operation,
@@ -11,24 +13,25 @@ import utils.messages.MessagesHelper;
  * Messages are unique, that is, no process ever broadcasts the same message
  * twice and furthermore, no two processes ever broadcast the same message.
  */
-public class BestEffortBroadcastAbstraction extends AbstractAbstraction {
+public class BestEffortBroadcastAbstraction extends AbstractAbstractionLayer {
 
-    public BestEffortBroadcastAbstraction(final IConsensus consensus) {
+    public BestEffortBroadcastAbstraction(final IConsensusModule consensus) {
         super(consensus);
     }
 
     @Override
     protected void init() {
-        abstractionId = "beb";
+        super.abstractionId = "beb";
     }
 
     /**
      * This algorithm listens only for beb broadcast and plDeliver messages
+     *
      * @param message: the message that appeared into queue
      * @return true if the message was handled
      */
     @Override
-    public boolean onMessage(final Paxos.Message message) {
+    public boolean onMessage(Message message) {
         switch (message.getType()) {
             case BEB_BROADCAST:
                 return onBebBroadcast(message.getBebBroadcast());
@@ -41,12 +44,13 @@ public class BestEffortBroadcastAbstraction extends AbstractAbstraction {
     /**
      * On the broadcast message we need to broadcast the message to every single existing process
      * (including current process)
+     *
      * @param bebBroadcast: the broadcast
      * @return true
      */
-    private boolean onBebBroadcast(final Paxos.BebBroadcast bebBroadcast) {
+    private boolean onBebBroadcast(final BebBroadcast bebBroadcast) {
         //iterate through all the processes
-        consensus.getProcess().forEach(processId -> {
+        consensus.getProcessList().forEach(processId -> {
             //create the beb message
             final var bebMessage = MessagesHelper
                     .createPlSendMessage(abstractionId, processId, bebBroadcast.getMessage());
@@ -54,12 +58,12 @@ public class BestEffortBroadcastAbstraction extends AbstractAbstraction {
             consensus.trigger(bebMessage);
         });
 
-        //mark the request as handled
         return true;
     }
 
     /**
      * Handle the PL_Deliver message
+     *
      * @param plDeliver: the message
      * @return true
      */

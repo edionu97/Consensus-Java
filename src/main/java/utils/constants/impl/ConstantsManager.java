@@ -4,13 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import utils.constants.IConstantsManager;
 import utils.constants.model.Constants;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 public class ConstantsManager implements IConstantsManager {
@@ -18,16 +15,9 @@ public class ConstantsManager implements IConstantsManager {
     private final Map<String, Object> constantsMap = new HashMap<>();
 
     public ConstantsManager() {
-
-        //read the constants file
-        final var constantsFile = new File(
-                Objects.requireNonNull(
-                        getClass().getClassLoader().getResource("constants.json")).getFile()
-        );
-
         //parse the json to JAVA object, and populate the constants map
         try {
-            populateConstantsMap(new ObjectMapper().readValue(constantsFile, Constants.class));
+            populateConstantsMap(new ObjectMapper().readValue(new File("src/main/resources/constants.json"), Constants.class));
         } catch (final Exception e) {
             e.printStackTrace();
         }

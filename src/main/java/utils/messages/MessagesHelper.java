@@ -3,9 +3,9 @@ package utils.messages;
 import consensus.Paxos;
 
 import static consensus.Paxos.Message.Type.*;
+import static consensus.Paxos.Message.Type.APP_PROPOSE;
 
 public class MessagesHelper {
-
     /**
      * Create an appRegistration message
      *

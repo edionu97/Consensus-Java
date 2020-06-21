@@ -1,14 +1,17 @@
-package consensus.algorithms.impl;
+package consensus.algotithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.abstracts.AbstractAbstractionLayer;
+import consensus.module.IConsensusModule;
 import utils.messages.MessagesHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static consensus.Paxos.Message;
+import static consensus.Paxos.ProcessId;
 
 /**
  * An eventual leader-detector abstraction, that encapsulates a leader-election primitive
@@ -17,18 +20,18 @@ import java.util.stream.Collectors;
  * manner and for an arbitrary period of time. Moreover, many leaders might be elected during
  * the same period of time without having crashed. Once a unique leader is determined, and does
  * not change again, we say that the leader has stabilized.
- *
+ * <p>
  * The Monarchical Eventual Leader Detection is implemented as a leader-detector abstraction.
  * The algorithm maintains the set of processes that are suspected and declares the nonsuspected
  * process with the highest rank to be the leader. Eventually, and provided at least one
  * process is correct, the same correct process will be trusted by all correct processes.
  */
-public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
+public class EventualLeaderDetectorAbstraction extends AbstractAbstractionLayer {
 
-    private List<Paxos.ProcessId> suspected;
-    private Paxos.ProcessId leader;
+    private List<ProcessId> suspected;
+    private ProcessId leader;
 
-    public EventualLeaderDetectorAbstraction(final IConsensus consensus) {
+    public EventualLeaderDetectorAbstraction(final IConsensusModule consensus) {
         super(consensus);
     }
 
@@ -40,15 +43,13 @@ public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
     }
 
     @Override
-    public boolean onMessage(final Paxos.Message message) {
-
+    public boolean onMessage(final Message message) {
         switch (message.getType()) {
             case EPFD_SUSPECT:
                 return onEpfdSuspect(message.getEpfdSuspect());
             case EPFD_RESTORE:
                 return onEpfdRestore(message.getEpfdRestore());
         }
-
         return false;
     }
 
@@ -56,27 +57,25 @@ public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
      * This method listens for EPFD_SUSPECT message
      * If a process is suspected to be dead, it is added into the list
      * The leader is updated
+     *
      * @param epfdSuspect: the received message
      * @return true
      */
     private boolean onEpfdSuspect(final Paxos.EpfdSuspect epfdSuspect) {
-
-        //check if in the list is a process that have the same port as the r
-        final var isPresent = suspected.stream().anyMatch(x -> x.getPort() == epfdSuspect.getProcess().getPort());
-        if(isPresent) {
-            return true;
+        //get the suspected process
+        final var suspectedProcess = epfdSuspect.getProcess();
+        //if the suspected process is not already into the list
+        if (suspected.stream().noneMatch(processId -> suspectedProcess.getPort() != processId.getPort())) {
+            suspected.add(epfdSuspect.getProcess());
+            updateLeader();
         }
-
-        //add the process into the suspected list if it is not already into the list
-        suspected.add(epfdSuspect.getProcess());
-
-        //trigger the leader update check
-        updateLeader();
         return true;
     }
 
+
     /**
      * If the process was restored, we no longer need to suspect it, so we remove it from the suspected list
+     *
      * @param epfdRestore: the message
      * @return true
      */
@@ -93,14 +92,18 @@ public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
      * (by rank) from the processes that are not suspected to be dead
      */
     private void updateLeader() {
-        //get the process that are not suspected to be dead
-        final var difference = new ArrayList<>(consensus.getProcess())
+        //get all processes that are not suspected
+        final var difference = new ArrayList<>(consensus.getProcessList())
                 .stream()
-                .filter(nodeProcess -> suspected
+                .filter(node -> suspected
                         .stream()
-                        .noneMatch(suspectedProcess -> suspectedProcess.getPort() == nodeProcess.getPort())
-                )
+                        .noneMatch(suspected -> suspected.getPort() == node.getPort()))
                 .collect(Collectors.toList());
+
+        //if all the list is empty, then do nothing
+        if (difference.isEmpty()) {
+            return;
+        }
 
         //get the new leader
         final var maxRankAliveProcess = difference
@@ -108,7 +111,7 @@ public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
                 .max(Comparator.comparingInt(Paxos.ProcessId::getRank)).get();
 
         //check if event condition is triggered
-        if(!(this.leader == null || this.leader.getRank() != maxRankAliveProcess.getRank())) {
+        if (!(this.leader == null || this.leader.getRank() != maxRankAliveProcess.getRank())) {
             return;
         }
 

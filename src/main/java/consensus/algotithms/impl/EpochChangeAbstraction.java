@@ -1,11 +1,10 @@
-package consensus.algorithms.impl;
+package consensus.algotithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.abstracts.AbstractAbstractionLayer;
+import consensus.module.IConsensusModule;
 import utils.messages.MessagesHelper;
-import utils.messages.ProcessHelper;
-
+import utils.processes.ProcessHelper;
 
 /**
  * An epoch change abstraction (leader based) that signals the start of a new epoch when
@@ -14,13 +13,13 @@ import utils.messages.ProcessHelper;
  * Initially, the process sets ts to its rank. Whenever the leader detector subsequently makes p
  * trust itself, p adds N to ts and sends a NEWEPOCH message with ts.
  */
-public class EpochChangeAbstraction extends AbstractAbstraction {
+public class EpochChangeAbstraction extends AbstractAbstractionLayer {
 
     private Paxos.ProcessId trusted;
     private int lastTs;
     private int ts;
 
-    public EpochChangeAbstraction(final IConsensus consensus) {
+    public EpochChangeAbstraction(final IConsensusModule consensus) {
         super(consensus);
     }
 
@@ -29,7 +28,7 @@ public class EpochChangeAbstraction extends AbstractAbstraction {
         abstractionId = "ec";
         lastTs = 0;
         ts = consensus.getCurrentPID().getRank();
-        trusted = ProcessHelper.getMinRankProcess(consensus.getProcess());
+        trusted = ProcessHelper.getMinRankProcess(consensus.getProcessList());
     }
 
     /**
@@ -70,7 +69,7 @@ public class EpochChangeAbstraction extends AbstractAbstraction {
         }
 
         //increase the ts with the number of processes
-        this.ts += consensus.getProcess().size();
+        this.ts += consensus.getProcessList().size();
 
         //create a new epoch message
         final var ecNewEpochMessage = MessagesHelper.createEcNewEpoch(abstractionId, this.ts);
@@ -140,7 +139,7 @@ public class EpochChangeAbstraction extends AbstractAbstraction {
         }
 
         //increase the ts
-        this.ts += consensus.getProcess().size();
+        this.ts += consensus.getProcessList().size();
 
         //create the
         final var ecNewEpochMessage = MessagesHelper.createEcNewEpoch(abstractionId, ts);
@@ -149,6 +148,4 @@ public class EpochChangeAbstraction extends AbstractAbstraction {
         consensus.trigger(ecNewEpochMessage);
         return true;
     }
-
-
 }

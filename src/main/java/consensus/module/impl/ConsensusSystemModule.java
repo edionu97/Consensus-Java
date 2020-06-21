@@ -1,59 +1,69 @@
 package consensus.module.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.IAbstractionLayer;
-import consensus.module.IConsensus;
+import consensus.algotithms.IAbstractionLayer;
+import consensus.module.IConsensusModule;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
-public class ConsensusSystemModule implements IConsensus {
+public class ConsensusSystemModule implements IConsensusModule {
 
-    private int hubPort;
-    private int nodePort;
-    private String hubIp;
+    private final int nodePort;
+    private final int hubPort;
+    private final String hubIp;
     private final String systemId;
-    private Paxos.ProcessId currentProcessPid;
+    private Paxos.ProcessId currentProcessId;
 
     private final List<Paxos.ProcessId> processList = new CopyOnWriteArrayList<>();
-    private final List<IAbstractionLayer> abstractionLayers = new CopyOnWriteArrayList<>();
+    private final List<IAbstractionLayer> abstractionList = new CopyOnWriteArrayList<>();
     private final List<Paxos.Message> messageQueue = new CopyOnWriteArrayList<>();
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public ConsensusSystemModule(final int hubPort,
                                  final int nodePort, final String hubIp, final String systemId) {
-        this.hubPort = hubPort;
+
         this.nodePort = nodePort;
         this.hubIp = hubIp;
+        this.hubPort = hubPort;
         this.systemId = systemId;
     }
 
-    @Override
     @SuppressWarnings("InfiniteLoopStatement")
     public void init() {
         //run the function on another thread
-        executorService.submit(() -> {
+        executorService.execute(() -> {
             //infinite loop
             while (true) {
                 //iterate through message list and check what messages can be processed
-                for (int messageIdx = 0; messageIdx < messageQueue.size(); ++messageIdx) {
-                    //check to see if the message can be processed by an abstraction layer
-                    if (!isHandled(messageQueue.get(messageIdx))) {
-                        continue;
+                for (int messageIndex = 0; !messageQueue.isEmpty() && messageIndex < messageQueue.size(); ++messageIndex) {
+                    //process the messages
+                    var wasProcessed = false;
+                    for (final var abstraction : abstractionList) {
+                        //check to see if the message can be processed by an abstraction layer
+                        if (abstraction.onMessage(messageQueue.get(messageIndex))) {
+                            wasProcessed = true;
+                        }
                     }
-                    //remove the message from the queue because it has been handled
-                    messageQueue.remove(messageIdx);
-                    break;
+                    //if the message was handled that remove it from the queue
+                    if (wasProcessed) {
+                        messageQueue.remove(messageIndex);
+                        break;
+                    }
                 }
-                //sleep for some time
-                Thread.sleep(15);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
+
+
     }
 
     @Override
@@ -67,23 +77,36 @@ public class ConsensusSystemModule implements IConsensus {
     }
 
     @Override
-    public void configure(final List<Consumer<IConsensus>> configurationActions) {
-        if (configurationActions == null) {
-            return;
-        }
-        configurationActions.forEach(action -> action.accept(this));
-    }
-
-    @Override
-    public void pushLayer(final IAbstractionLayer layer) {
-        abstractionLayers.add(layer);
-    }
-
-    @Override
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public void alterProcessList(final List<Paxos.ProcessId> processIds) {
-        processList.addAll(processIds);
-        currentProcessPid = getCurrentProcessPid().get();
+    public void alterProcessList(final List<Paxos.ProcessId> processesList) {
+        processList.addAll(processesList);
+        currentProcessId = getCurrentProcessPid().get();
+    }
+
+
+    @Override
+    public void pushLayer(final IAbstractionLayer abstractionLayer) {
+        abstractionList.add(abstractionLayer);
+    }
+
+    @Override
+    public int getNodePort() {
+        return nodePort;
+    }
+
+    @Override
+    public int getHubPort() {
+        return hubPort;
+    }
+
+    @Override
+    public Paxos.ProcessId getCurrentPID() {
+        return currentProcessId;
+    }
+
+    @Override
+    public List<Paxos.ProcessId> getProcessList() {
+        return processList;
     }
 
     @Override
@@ -97,50 +120,12 @@ public class ConsensusSystemModule implements IConsensus {
     }
 
     @Override
-    public int getHubPort() {
-        return hubPort;
-    }
-
-    @Override
-    public int getNodePort() {
-        return nodePort;
-    }
-
-    @Override
-    public Paxos.ProcessId getCurrentPID() {
-        return currentProcessPid;
-    }
-
-    @Override
-    public List<Paxos.ProcessId> getProcess() {
-        return processList;
-    }
-
-    @Override
     public Optional<Paxos.ProcessId> identifySenderProcessByNetworkMessage(final Paxos.NetworkMessage networkMessage) {
         //get the process that sent the network message
         return processList
                 .stream()
                 .filter(processId -> processId.getPort() == networkMessage.getSenderListeningPort())
                 .findFirst();
-    }
-
-    /**
-     * This method iterates through all the abstraction list to see if exist at least one abstraction that can process
-     * the given message
-     *
-     * @param message: the message that needs to be processed
-     * @return true if there exist at least one abstraction that could handle the message or false otherwise
-     */
-    private boolean isHandled(final Paxos.Message message) {
-        //assume that the message was processed by no abstraction
-        var messageWasProcessed = false;
-        //check into all the abstraction to see if one of them could handle the message
-        for (final var abstraction : abstractionLayers) {
-            messageWasProcessed = messageWasProcessed || abstraction.onMessage(message);
-        }
-        //return the result
-        return messageWasProcessed;
     }
 
     /**

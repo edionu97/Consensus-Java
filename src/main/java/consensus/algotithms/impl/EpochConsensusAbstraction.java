@@ -1,15 +1,14 @@
-package consensus.algorithms.impl;
+package consensus.algotithms.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.abstracts.AbstractAbstractionLayer;
+import consensus.module.IConsensusModule;
 import utils.messages.MessagesHelper;
 import utils.values.ValueHelper;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Epoch consensus is a primitive similar to consensus, where the processes propose a value
@@ -33,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * timestamp/value pair with the written value, and halts. It is important that the instance performs
  * sno further steps.
  */
-public class EpochConsensusAbstraction extends AbstractAbstraction {
+public class EpochConsensusAbstraction extends AbstractAbstractionLayer {
 
     private int ets;
     private int accepted;
@@ -43,7 +42,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
 
     private final Map<Paxos.ProcessId, Paxos.EpState_> states;
 
-    protected EpochConsensusAbstraction(final IConsensus consensus, final int ets, final Paxos.EpState_ epState) {
+    protected EpochConsensusAbstraction(final IConsensusModule consensus, final int ets, final Paxos.EpState_ epState) {
         super(consensus);
 
         //could not be initialized into the init because it is received as argument into the object constructor
@@ -225,7 +224,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
         states.put(plDeliver.getSender(), state);
 
         //check if the majority of processes has decided something, and if not break the execution
-        if (states.size() <= consensus.getProcess().size() / 2) {
+        if (states.size() <= consensus.getProcessList().size() / 2) {
             return true;
         }
 
@@ -243,7 +242,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
         ++accepted;
 
         //if the value is less than half the processes then do nothing
-        if (accepted <= consensus.getProcess().size() / 2) {
+        if (accepted <= consensus.getProcessList().size() / 2) {
             return true;
         }
 

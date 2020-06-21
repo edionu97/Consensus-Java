@@ -1,8 +1,7 @@
 package consensus.node.impl;
 
 import consensus.Paxos;
-import consensus.algorithms.impl.AppAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.impl.AppLayer;
 import consensus.module.impl.ConsensusSystemModule;
 import consensus.node.INode;
 import utils.messages.MessagesHelper;
@@ -10,38 +9,26 @@ import utils.messages.SendHelper;
 
 import java.io.DataInputStream;
 import java.net.ServerSocket;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HubNode implements INode {
 
+    private final int hubPort;
+    private final int nodePort;
+    private final String hubIp;
     private final String nodeOwner;
     private final int nodeOwnerIndex;
-    private final int nodePort;
-    private final int hubPort;
-    private final String hubIp;
-
-    private final Map<String, IConsensus> sysIdToConsensus = new ConcurrentHashMap<>();
+    private final Map<String, ConsensusSystemModule> systemIdToSystem = new HashMap<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    /**
-     * Create a hub_node
-     *
-     * @param owner:      owner of the node
-     * @param ownerIndex: the index of the owner
-     * @param nodePort:   node's port
-     * @param hubIp:      hub's ip
-     * @param hubPort:    hub's port
-     */
-    public HubNode(final String owner,
-                   final int ownerIndex,
+    public HubNode(final String nodeOwner,
+                   final int nodeOwnerIndex,
                    final int nodePort, final String hubIp, final int hubPort) {
-
-        this.nodeOwner = owner;
-        this.nodeOwnerIndex = ownerIndex;
+        this.nodeOwner = nodeOwner;
+        this.nodeOwnerIndex = nodeOwnerIndex;
         this.nodePort = nodePort;
         this.hubIp = hubIp;
         this.hubPort = hubPort;
@@ -93,6 +80,7 @@ public class HubNode implements INode {
         SendHelper.sendMessage(registrationMessage, hubIp, hubPort, nodePort);
     }
 
+
     /**
      * Process the received receivedMessage
      * If the receivedMessage is app purpose then start a new instance of consensus module, otherwise, if other than the
@@ -127,17 +115,15 @@ public class HubNode implements INode {
      */
     private void onAppPurpose(final Paxos.Message receivedMessage, final String systemId) {
         //crete a new instance of a consensus system
-        var consensusSystemModule = new ConsensusSystemModule(hubPort, nodePort, hubIp, systemId) {{
+        final var consensusModule = new ConsensusSystemModule(hubPort, nodePort, hubIp, systemId){{
             init();
-            //the first layer is the app layer
-            configure(Collections
-                    .singletonList(
-                            (consensus) -> consensus.pushLayer(new AppAbstraction(consensus))));
         }};
+        //push the first layer
+        consensusModule.pushLayer(new AppLayer(consensusModule));
         //add it to the map
-        sysIdToConsensus.put(systemId, consensusSystemModule);
+        systemIdToSystem.put(systemId, consensusModule);
         //put the receivedMessage into the queue (trigger the action)
-        consensusSystemModule.trigger(receivedMessage);
+        consensusModule.trigger(receivedMessage);
     }
 
 
@@ -156,7 +142,7 @@ public class HubNode implements INode {
         final var innerMessage = networkMessage.getMessage();
 
         //get the system
-        var consSystem = sysIdToConsensus.get(systemId);
+        var consSystem = systemIdToSystem.get(systemId);
         if (consSystem == null) {
             return;
         }
@@ -177,4 +163,7 @@ public class HubNode implements INode {
         //trigger the plDeliver message so that all the abstractions that listen for PL_DELIVER message type to be informed
         consSystem.trigger(plDeliverMessage);
     }
+
 }
+
+

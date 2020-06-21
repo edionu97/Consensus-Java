@@ -1,13 +1,13 @@
-package consensus.algorithms.impl;
+package consensus.algotithms.impl;
+
 
 import consensus.Paxos;
-import consensus.algorithms.abstracts.AbstractAbstraction;
-import consensus.module.IConsensus;
+import consensus.algotithms.abstracts.AbstractAbstractionLayer;
+import consensus.module.IConsensusModule;
+import consensus.module.impl.ConsensusSystemModule;
 import utils.messages.MessagesHelper;
+import utils.processes.ProcessHelper;
 import utils.values.ValueHelper;
-
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * A uniform consensus algorithm based on a fail-noisy model (Leader driven consensus) that runs
@@ -23,7 +23,7 @@ import java.util.List;
  * also decides that value in consensus, but continues to participate in the consensus
  * algorithm, to help other processes decide.
  */
-public class UniformConsensusAbstraction extends AbstractAbstraction {
+public class UniformConsensusAbstraction extends AbstractAbstractionLayer {
 
     private int ets;
     private int newts;
@@ -36,7 +36,7 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
     private Paxos.ProcessId l;
     private Paxos.ProcessId newl;
 
-    public UniformConsensusAbstraction(final IConsensus consensus) {
+    public UniformConsensusAbstraction(final IConsensusModule consensus) {
         super(consensus);
     }
 
@@ -47,7 +47,7 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
         this.proposed = this.decided = false;
         this.ets = this.newts = 0;
 
-        this.l = getMinRankProcess(consensus.getProcess());
+        this.l = ProcessHelper.getMinRankProcess(consensus.getProcessList());
         this.newl = null;
 
         startNewEpoch(ets, newts, val);
@@ -74,6 +74,7 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
      * Handle the ucPropose message, by updating the val
      * Also taking in consideration that val is part of condition that could trigger EP_PROPOSE, we need to check
      * if all the conditions are met
+     *
      * @param ucPropose: the ucPropose message
      * @return true
      */
@@ -85,6 +86,7 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
 
     /**
      * Handle the EcStartEpoch event
+     *
      * @param ecStartEpoch: the ec start epoch message
      * @return true
      */
@@ -104,12 +106,13 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
 
     /**
      * Handle the epAborted message
+     *
      * @param epAborted: the epAborted message
      * @return true if the ets == getEts or false otherwise
      */
     private boolean onEpAborted(final Paxos.EpAborted epAborted) {
         //check if the event condition is met
-        if(ets != epAborted.getEts()) {
+        if (ets != epAborted.getEts()) {
             return false;
         }
 
@@ -126,17 +129,18 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
 
     /**
      * Handle the EpDecide event
+     *
      * @param epDecide: the EP_Decide message
      * @return true if the event condition is met or false otherwise
      */
     private boolean onEpDecide(final Paxos.EpDecide epDecide) {
         //check the event condition
-        if(ets != epDecide.getEts()) {
+        if (ets != epDecide.getEts()) {
             return false;
         }
 
         //if not decided, decide the ep value
-        if(!decided) {
+        if (!decided) {
             decided = true;
             consensus.trigger(MessagesHelper
                     .createUcDecideMessage(ValueHelper.makeCopy(epDecide.getValue())));
@@ -152,15 +156,7 @@ public class UniformConsensusAbstraction extends AbstractAbstraction {
                 .build();
 
         //add new layer into the consensus (epoch consensus layer)
-        consensus.pushLayer(new EpochConsensusAbstraction(consensus, ets, state_));
-    }
-
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    private static Paxos.ProcessId getMinRankProcess(final List<Paxos.ProcessId> processIdList) {
-        //get the min rank process
-        return processIdList
-                .stream()
-                .min(Comparator.comparingInt(Paxos.ProcessId::getRank)).get();
+        consensus.pushLayer(new EpochConsensusAbstraction((ConsensusSystemModule) consensus, ets, state_));
     }
 
     /**
