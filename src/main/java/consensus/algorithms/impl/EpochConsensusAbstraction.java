@@ -295,7 +295,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
 
         //put the message into queue
         consensus.trigger(epAbortedMessage);
-        return false;
+        return true;
     }
 
     /**
