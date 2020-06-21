@@ -94,7 +94,7 @@ public class EventualLeaderDetectorAbstraction extends AbstractAbstraction {
      */
     private void updateLeader() {
         //get the process that are not suspected to be dead
-        final var difference = consensus.getProcess()
+        final var difference = new ArrayList<>(consensus.getProcess())
                 .stream()
                 .filter(nodeProcess -> suspected
                         .stream()
