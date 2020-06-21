@@ -388,6 +388,20 @@ public class MessagesHelper {
     }
 
     /**
+     * Create an ELD_Trust message
+     * @param process: the process
+     * @return a fully configured instance of the message
+     */
+    public static Paxos.Message createEldTrustMessage(final Paxos.ProcessId process) {
+        return Paxos.Message.newBuilder()
+                .setType(ELD_TRUST)
+                .setEldTrust(Paxos.EldTrust.newBuilder()
+                        .setProcess(process)
+                        .build())
+                .build();
+    }
+
+    /**
      * Check if the message is app purpose
      *
      * @param message: Paxos.Message
