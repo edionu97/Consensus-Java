@@ -402,6 +402,72 @@ public class MessagesHelper {
     }
 
     /**
+     * Create the epfdReply message
+     * @param abstractionId: the id of the abstraction
+     * @param destination: the id of the destination
+     * @return a fully configured epfdReply message
+     */
+    public static Paxos.Message createEpfdReply(final String abstractionId, final Paxos.ProcessId destination) {
+        return Paxos.Message.newBuilder()
+                .setType(PL_SEND)
+                .setAbstractionId(abstractionId)
+                .setPlSend(Paxos.PlSend.newBuilder()
+                        .setDestination(destination)
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setType(EPFD_HEARTBEAT_REPLY)
+                                .setEpfdHeartbeatReply(Paxos.EpfdHeartbeatReply_.newBuilder()
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
+     * Create an epfd timeout message
+     * @return a fully configured epfd timeout message
+     */
+    public static Paxos.Message createEpfdTimeout(){
+        return Paxos.Message.newBuilder()
+                .setType(EPFD_TIMEOUT)
+                .setEpfdTimeout(Paxos.EpfdTimeout.newBuilder()
+                        .build())
+                .build();
+    }
+
+    public static Paxos.Message createEpfdSuspectMessage(final Paxos.ProcessId suspectedProcess) {
+        return Paxos.Message.newBuilder()
+                .setType(EPFD_SUSPECT)
+                .setEpfdSuspect(Paxos.EpfdSuspect.newBuilder()
+                        .setProcess(suspectedProcess)
+                        .build())
+                .build();
+    }
+
+    public static Paxos.Message createEpfdRestoreMessage(final Paxos.ProcessId restoredProcess) {
+        return Paxos.Message.newBuilder()
+                .setType(EPFD_RESTORE)
+                .setEpfdRestore(Paxos.EpfdRestore.newBuilder()
+                        .setProcess(restoredProcess)
+                        .build())
+                .build();
+    }
+
+    public static Paxos.Message createEpfdHeartBeatRequestMessage(final String abstractionId, final Paxos.ProcessId processId) {
+        return Paxos.Message.newBuilder()
+                .setType(PL_SEND)
+                .setAbstractionId(abstractionId)
+                .setPlSend(Paxos.PlSend.newBuilder()
+                        .setDestination(processId)
+                        .setMessage(Paxos.Message.newBuilder()
+                                .setType(EPFD_HEARTBEAT_REQUEST)
+                                .setEpfdHeartbeatRequest(Paxos.EpfdHeartbeatRequest_.newBuilder()
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /**
      * Check if the message is app purpose
      *
      * @param message: Paxos.Message
