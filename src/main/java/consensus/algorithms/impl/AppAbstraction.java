@@ -48,9 +48,9 @@ public class AppAbstraction extends AbstractAbstraction {
                 (consensus) -> consensus.alterProcessList(processList),
                 //push the other layers into the consensus module
                 (consensus) -> consensus.pushLayer(new UniformConsensusAbstraction(consensus)),
-                (consensus) -> consensus.pushLayer(new EpochChangeAbstraction(consensus)),
-                (consensus) -> consensus.pushLayer(new EventuallyPerfectFailureDetectorAbstraction(consensus)),
-                (consensus) -> consensus.pushLayer(new EventualLeaderDetectorAbstraction(consensus)),
+                //(consensus) -> consensus.pushLayer(new EpochChangeAbstraction(consensus)),
+                //(consensus) -> consensus.pushLayer(new EventuallyPerfectFailureDetectorAbstraction(consensus)),
+                //(consensus) -> consensus.pushLayer(new EventualLeaderDetectorAbstraction(consensus)),
                 (consensus) -> consensus.pushLayer(new BestEffortBroadcastAbstraction(consensus)),
                 (consensus) -> consensus.pushLayer(new PerfectLinkAbstraction(consensus))
         ));

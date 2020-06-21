@@ -7,6 +7,7 @@ import utils.messages.MessagesHelper;
 import utils.values.ValueHelper;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,7 +49,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
         //could not be initialized into the init because it is received as argument into the object constructor
         this.ets = ets;
         this.state = epState;
-        this.states = new ConcurrentHashMap<>();
+        this.states = new HashMap<>();
     }
 
     @Override
@@ -171,7 +172,7 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
      */
     private boolean onBebDeliverDecided(final Paxos.BebDeliver bedDeliverDecided) {
         //get epDecide from the message
-        final var epDecide = bedDeliverDecided.getMessage().getEpDecide();
+        final var epDecide = bedDeliverDecided.getMessage().getEpDecided();
         //creat the epDecided Message
         final var epDecideMessage = MessagesHelper.createEpDecideMessage(ets, epDecide.getValue());
         //put the message into queue
@@ -288,7 +289,8 @@ public class EpochConsensusAbstraction extends AbstractAbstraction {
     private boolean onEpAbort(final Paxos.EpAbort ignored) {
         //create the epAborted message
         final var epAbortedMessage = MessagesHelper
-                .createEpAbortedMessage(ets, state.getValueTimestamp(), state.getValue());
+                .createEpAbortedMessage(ets,
+                        state.getValueTimestamp(), ValueHelper.makeCopy(state.getValue()));
 
         //the abstraction can no longer receive the message
         canHandleMessages = false;
