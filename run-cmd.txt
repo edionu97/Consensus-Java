@@ -1,0 +1,1 @@
+paxos-windows-amd64.exe localhost 5000 localhost 5001 5002 5003
