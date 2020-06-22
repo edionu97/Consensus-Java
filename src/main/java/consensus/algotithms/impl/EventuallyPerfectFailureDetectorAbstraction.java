@@ -118,21 +118,6 @@ public class EventuallyPerfectFailureDetectorAbstraction extends AbstractAbstrac
      * Afterwards request a heartbeat reply from every processId.
      */
     private void handleEpfdTimeout() {
-        //
-        boolean intersectionEmpty = true;
-        for (ProcessId aliveProcess : alive) {
-            for (ProcessId suspectedProcess : suspected) {
-                if (aliveProcess.getPort() == suspectedProcess.getPort()) {
-                    intersectionEmpty = false;
-                    break;
-                }
-            }
-            if (!intersectionEmpty) {
-                delay += DELTA;
-                break;
-            }
-        }
-
         //check the intersection
         final var intersects = alive
                 .stream()
